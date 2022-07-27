@@ -22,8 +22,9 @@ class LandingPageView(View):
         organizations = Institution.objects.filter(type=2)
         locals = Institution.objects.filter(type=3)
         user = request.user
-        return render(request, "index.html", {"quantity": quantity, "count_institutions": count_institutions, "user": user,
-                                            "fundations": fundations, "organizations": organizations, "locals": locals})
+        return render(request, "index.html", {"quantity": quantity, "count_institutions": count_institutions,
+                                              "user": user, "fundations": fundations, "organizations": organizations,
+                                              "locals": locals})
 
 
 class AddDonationView(LoginRequiredMixin, View):
@@ -34,41 +35,32 @@ class AddDonationView(LoginRequiredMixin, View):
 
 class LoginView(View):
     def get(self, request):
-        form = LoginForm()
-        user = request.user
-        return render(request, "login.html", {"form": form, "user": user})
+        return render(request, 'login.html')
 
     def post(self, request):
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            user = authenticate(username=form.cleaned_data['mail'], password=form.cleaned_data['password'])
-            if user:
-                login(request, user)
-                next_parameter = request.GET.get('next')
-                if next_parameter:
-                    return redirect(next_parameter)
-                return HttpResponseRedirect('/')
-            else:
-                return HttpResponseRedirect('/register')
-        return render(request, "login.html", {'form': form})
+        username = request.POST['mail']
+        password = request.POST['password']
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            return HttpResponseRedirect('/register')
 
 
 class RegisterView(View):
     def get(self, request):
-        form = RegisterForm()
-        user = request.user
-        return render(request, "register.html", {"form": form, "user": user})
+        return render(request, 'register.html')
 
     def post(self, request):
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            mail = form.cleaned_data['mail']
-            password = form.cleaned_data['password']
-            password2 = form.cleaned_data['password2']
-            if password == password2:
-                User.objects.create_user(mail, password)
-                return HttpResponseRedirect("/login")
-        return render(request, "register.html", {"form": form})
+        if request.POST.get('name') and request.POST.get('surname') and request.POST.get('mail') \
+                and request.POST.get('password') and request.POST.get('password2'):
+            User.objects.create_user(email=request.POST.get('mail'), password=request.POST.get('password'),
+                                     first_name=request.POST.get('name'), last_name=request.POST.get('surname'))
+            return HttpResponseRedirect('/login')
+        else:
+            return HttpResponseRedirect('/register')
 
 
 class LogoutView(LoginRequiredMixin, View):
