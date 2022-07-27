@@ -48,5 +48,5 @@ class RegisterView(View):
             password2 = form.cleaned_data['password2']
             if password == password2:
                 User.objects.create_user(mail, password)
-                return HttpResponse(f'Użytkownik {mail} został zarejestrowany.')
+                return HttpResponseRedirect("/login")
         return render(request, "register.html", {"form": form})
