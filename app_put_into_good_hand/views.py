@@ -4,7 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
 
-from app_put_into_good_hand.models import Donation, Institution
+from app_put_into_good_hand.models import Donation, Institution, User
+from app_put_into_good_hand.forms import RegisterForm
 
 
 class LandingPageView(View):
@@ -36,4 +37,16 @@ class LoginView(View):
 
 class RegisterView(View):
     def get(self, request):
-        return render(request, "register.html", {})
+        form = RegisterForm()
+        return render(request, "register.html", {"form": form})
+
+    def post(self, request):
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            mail = form.cleaned_data['mail']
+            password = form.cleaned_data['password']
+            password2 = form.cleaned_data['password2']
+            if password == password2:
+                User.objects.create_user(mail, password)
+                return HttpResponse(f'Użytkownik {mail} został zarejestrowany.')
+        return render(request, "register.html", {"form": form})
