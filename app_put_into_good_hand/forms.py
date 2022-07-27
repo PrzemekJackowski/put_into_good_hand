@@ -8,4 +8,6 @@ class RegisterForm(forms.Form):
     password2 = forms.CharField(label="Powtórz hasło", widget=forms.PasswordInput)
 
 
-
+class LoginForm(forms.Form):
+    mail = forms.EmailField(label="E-mail")
+    password = forms.CharField(label="Hasło", widget=forms.PasswordInput)

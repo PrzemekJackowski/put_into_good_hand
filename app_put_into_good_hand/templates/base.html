@@ -12,10 +12,22 @@
   <body>
     <header>
       <nav class="container container--70">
+          {% if user.is_anonymous %}
         <ul class="nav--actions">
           <li><a href="/login">Zaloguj</a></li>
           <li class="highlighted"><a href="/register">Załóż konto</a></li>
         </ul>
+    {% else %}
+        <li class="logged-user">
+            Witaj {{ user.mail }}
+            <ul class="dropdown">
+              <li><a href="#">Profil</a></li>
+              <li><a href="#">Ustawienia</a></li>
+              <li><a href="/logout">Wyloguj</a></li>
+            </ul>
+          </li>
+    {% endif %}
+
 
         <ul>
           <li><a href="../#">Start</a></li>
