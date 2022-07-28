@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <section class="contact">
+      <h3>Witaj {{ user.first_name }} {{ user.last_name }}</h3>
+      <h3>Twój adres mailowy to {{ user.email }}.</h3>
+    </section>
+    <section id="contact"></section>
+{% endblock %}

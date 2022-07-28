@@ -92,3 +92,9 @@ class LogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
         return HttpResponseRedirect('/')
+
+
+class UserView(LoginRequiredMixin, View):
+    def get(self, request):
+        user = request.user
+        return render(request, "profile.html", {"user": user})
