@@ -97,4 +97,9 @@ class LogoutView(LoginRequiredMixin, View):
 class UserView(LoginRequiredMixin, View):
     def get(self, request):
         user = request.user
-        return render(request, "profile.html", {"user": user})
+        gifts = Donation.objects.filter(user=user)
+        conn = {
+            "user": user,
+            "gifts": gifts,
+        }
+        return render(request, "profile.html", conn)

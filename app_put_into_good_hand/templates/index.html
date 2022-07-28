@@ -87,8 +87,9 @@
               <div class="title">{{ fundation.name }}</div>
               <div class="subtitle">{{  fundation.description }}</div>
             </div>
-
-            <div class="col"><div class="text">{{ fundation.categories.name }}</div></div>
+            {% for category in fundation.categories.all %}
+            <div class="col"><div class="text">{{ category.name }}</div></div>
+            {% endfor %}
           </li>
         {% endfor %}
         </ul>
@@ -114,8 +115,9 @@
               <div class="title">{{ organization.name }}</div>
               <div class="subtitle">{{  organization.description }}</div>
             </div>
-
-            <div class="col"><div class="text">{{ organization.categories.name }}</div></div>
+            {% for category in organization.categories.all %}
+            <div class="col"><div class="text">{{ category.name }}</div></div>
+            {% endfor %}
           </li>
         {% endfor %}
         </ul>

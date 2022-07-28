@@ -3,8 +3,31 @@
 {% block content %}
 
     <section class="contact">
-      <h3>Witaj {{ user.first_name }} {{ user.last_name }}</h3>
-      <h3>Twój adres mailowy to {{ user.email }}.</h3>
+      <h2>Witaj {{ user.first_name }} {{ user.last_name }}</h2>
+      <h2>Twój adres mailowy to {{ user.email }}.</h2>
+    <h2>Przekazane dary:</h2>
+    <align center><TABLE BORDER="2">
+    <thead>
+    <tr>
+        <th>Liczba przekazanych darów</th>
+        <th>Organizacja</th>
+        <th>Kategorie</th>
+        <th>Data przekazania</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for gift in gifts %}
+        <tr style="text-align: center; ">
+        <td>{{ gift.quantity }}</td>
+        <td>{{ gift.institution }}</td>
+        <td>{% for category in gift.categories.all %}
+            <div class="col"><div class="text">{{ category.name }}</div></div>
+            {% endfor %}</td>
+        <td>{{ gift.pick_up_date }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table></align>
     </section>
     <section id="contact"></section>
 {% endblock %}
