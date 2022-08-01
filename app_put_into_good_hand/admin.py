@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext_lazy as _
-from app_put_into_good_hand.models import Category, Institution, User
+from app_put_into_good_hand.models import Category, Institution, User, Donation
 
 admin.site.register(Category)
 admin.site.register(Institution)
+admin.site.register(Donation)
 
 
 @admin.register(User)

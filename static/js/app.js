@@ -172,6 +172,7 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$prev = form.querySelectorAll(".prev-step");
       this.$step = form.querySelector(".form--steps-counter span");
       this.currentStep = 1;
+      this.formcontainer = [];
 
       this.$stepInstructions = form.querySelectorAll(".form--steps-instructions p");
       const $stepForms = form.querySelectorAll("form > div");
@@ -196,6 +197,50 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$next.forEach(btn => {
         btn.addEventListener("click", e => {
           e.preventDefault();
+          if (this.currentStep === 1) {
+            this.categories = [];
+            const cats = document.getElementById("in_categories");
+            for (const cat in cats) {
+              if (cat.checked) {
+                this.categories.push(cat.value);
+              }
+            }
+            this.formcontainer.push(this.categories);
+          };
+          if (this.currentStep === 2) {
+            const quantity = document.getElementById("in_bags").value;
+            this.formcontainer.push(quantity);
+            document.getElementById("out_quantity").innerHTML = document.getElementById("in_bags").value;
+          };
+          if (this.currentStep === 3){
+            const instits = document.getElementById("in_organization");
+            for (const instit in instits) {
+              if (instit.checked) {
+                this.institution = instit.value;
+                document.getElementById("out_organization").innerHTML = instit.value;
+              }
+            }
+            this.formcontainer.push(this.institution);
+          };
+          if (this.currentStep === 4){
+            const informations = [
+                document.getElementById("in_address").value,
+                document.getElementById("in_city").value,
+                document.getElementById("in_postcode").value,
+                document.getElementById("in_phone").value,
+                document.getElementById("in_data").value,
+                document.getElementById("in_time").value,
+                document.getElementById("in_more_info").value,
+            ];
+            this.formcontainer.push(informations);
+            document.getElementById("out_address").innerHTML = document.getElementById("in_address").value;
+            document.getElementById("out_city").innerHTML = document.getElementById("in_city").value;
+            document.getElementById("out_postcode").innerHTML = document.getElementById("in_city").value;
+            document.getElementById("out_phone").innerHTML = document.getElementById("in_phone").value;
+            document.getElementById("out_data").innerHTML = document.getElementById("in_data").value;
+            document.getElementById("out_time").innerHTML = document.getElementById("in_time").value;
+            document.getElementById("out_more_info").innerHTML = document.getElementById("in_more_info").value;
+          };
           this.currentStep++;
           this.updateForm();
         });
@@ -205,6 +250,7 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$prev.forEach(btn => {
         btn.addEventListener("click", e => {
           e.preventDefault();
+          this.formcontainer.pop();
           this.currentStep--;
           this.updateForm();
         });
@@ -243,6 +289,7 @@ document.addEventListener("DOMContentLoaded", function() {
      * TODO: validation, send data to server
      */
     submit(e) {
+
       e.preventDefault();
       this.currentStep++;
       this.updateForm();

@@ -14,7 +14,7 @@ class LandingPageView(View):
         institutions = []
         for gift in gifts:
             quantity += gift.quantity
-            if gift.institution not in institutions:
+            if gift.institution.name not in institutions:
                 institutions.append(gift.institution.name)
         count_institutions = len(institutions)
         fundations = Institution.objects.filter(type=1)
@@ -43,6 +43,31 @@ class AddDonationView(LoginRequiredMixin, View):
             "institutions": institutions,
         }
         return render(request, "form.html",  conn)
+
+    def post(self, request):
+        quantity = request.POST['quantity']
+        categories = request.POST['categories']
+        organization = request.POST['organization']
+        address = request.POST['address']
+        city = request.POST['city']
+        postcode = request.POST['postcode']
+        phone = request.POST['phone']
+        data = request.POST['data']
+        time = request.POST['time']
+        more_info = request.POST['more_info']
+        user = request.user
+        Donation.objects.create(quantity=quantity,
+                                categories=categories,
+                                institution=organization,
+                                address=address,
+                                phone_number=phone,
+                                city=city,
+                                zip_code=postcode,
+                                pick_up_date=data,
+                                pick_up_time=time,
+                                pick_up_comment=more_info,
+                                user=user)
+        return render(request, "form-confirmation.html")
 
 
 class LoginView(View):
